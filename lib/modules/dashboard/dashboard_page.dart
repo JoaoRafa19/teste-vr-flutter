@@ -24,88 +24,93 @@ class DashboardPage extends StatelessWidget {
       ("Alunos Pendentes", 10, Colors.grey),
     ];
 
-    return Container(
-      padding: EdgeInsets.only(
-        right: 16,
-        top: 16,
-        left: width < 700 ? 16 : 0,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Dashboard",
+          style: theme.textTheme.titleLarge,
+        ),
+        centerTitle: isSmall,
       ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Dashboard",
-              style: theme.textTheme.titleLarge,
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                DashboardHeaderCard(
-                  title: "Total Students",
-                  data: NumberFormat("#,##0").format(1000),
-                ),
-                const SizedBox(width: 20),
-                DashboardHeaderCard(
-                  title: "Total Courses",
-                  data: NumberFormat("#,##0").format(9),
-                ),
-                const SizedBox(width: 20),
-                DashboardHeaderCard(
-                  title: "Total Enrolments",
-                  data: NumberFormat("#,##0").format(2000),
-                ),
-              ],
-            ),
-            const SizedBox(height: 50),
-            Container(
-              width: width * (isSmall ? 1 : 0.8),
-              height: width < 1000 ? height * 0.7 : height * 0.5,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300] ?? Colors.grey),
-                borderRadius: BorderRadius.circular(5),
+      body: Container(
+        padding: EdgeInsets.only(
+          right: 16,
+          top: 16,
+          left: width < 700 ? 16 : 0,
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DashboardHeaderCard(
+                    title: "Total Students",
+                    data: NumberFormat("#,##0").format(1000),
+                  ),
+                  const SizedBox(width: 20),
+                  DashboardHeaderCard(
+                    title: "Total Courses",
+                    data: NumberFormat("#,##0").format(9),
+                  ),
+                  const SizedBox(width: 20),
+                  DashboardHeaderCard(
+                    title: "Total Enrolments",
+                    data: NumberFormat("#,##0").format(2000),
+                  ),
+                ],
               ),
-              child: LayoutBuilder(builder: (context, constraints) {
-                bool isNarrow = constraints.maxWidth < 1100;
+              const SizedBox(height: 50),
+              Container(
+                width: width * (isSmall ? 1 : 0.8),
+                height: width < 1000 ? height * 0.7 : height * 0.5,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[300] ?? Colors.grey),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  bool isNarrow = constraints.maxWidth < 1100;
 
-                return isNarrow
-                    ? SingleChildScrollView(
-                        child: Column(
+                  return isNarrow
+                      ? SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Chart(
+                                data: chartData,
+                                orientation: Axis.vertical,
+                              ),
+                              const SizedBox(height: 16),
+                              Chart(
+                                data: chartData,
+                                orientation: Axis.vertical,
+                              ),
+                            ],
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Chart(
                               data: chartData,
-                              orientation: Axis.vertical,
+                              orientation: Axis.horizontal,
                             ),
-                            const SizedBox(height: 16),
                             Chart(
                               data: chartData,
-                              orientation: Axis.vertical,
+                              orientation: Axis.horizontal,
                             ),
                           ],
-                        ),
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Chart(
-                            data: chartData,
-                            orientation: Axis.horizontal,
-                          ),
-                          Chart(
-                            data: chartData,
-                            orientation: Axis.horizontal,
-                          ),
-                        ],
-                      );
-              }),
-            ),
-          ],
+                        );
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-

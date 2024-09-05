@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:teste_vr_flutter/modules/dashboard/dashboard_controller.dart';
-import 'package:teste_vr_flutter/modules/dashboard/dashboard_page.dart';
+import 'package:teste_vr_flutter/modules/dashboard/dashboad_module.dart';
 import 'package:teste_vr_flutter/modules/home/home_controller.dart';
 import 'package:teste_vr_flutter/modules/home/home_page.dart';
-import 'package:teste_vr_flutter/modules/students/students_page.dart';
+import 'package:teste_vr_flutter/modules/students/students_module.dart';
 
 class HomeModule extends Module {
   @override
   void binds(Injector i) {
     i.add(HomeController.new);
-    i.add(DashboardController.new);
     super.binds(i);
   }
 
@@ -18,12 +16,10 @@ class HomeModule extends Module {
   void routes(RouteManager r) {
     r.child(
       '/',
-      child: (context) =>  HomePage(),
+      child: (context) => HomePage(),
       children: [
-        ChildRoute('/dashboard', child: (_) => DashboardPage()),
-        ChildRoute('/students',
-            child: (context) =>
-                const StudentsPage()),
+        ModuleRoute('/dashboard', module: DashboardModule()),
+        ModuleRoute('/students', module: StudentsModule()),
       ],
     );
     super.routes(r);

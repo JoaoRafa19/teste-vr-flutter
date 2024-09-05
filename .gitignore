@@ -3,3 +3,4 @@
 .fvm/
 
 build/
+.dart_tool/

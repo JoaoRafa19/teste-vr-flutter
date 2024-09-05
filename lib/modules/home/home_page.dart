@@ -9,8 +9,8 @@ class HomePage extends StatelessWidget {
   final controller = Modular.get<HomeController>();
 
   void onTap(Pages page) {
+    Modular.to.navigate("/home/${page.name}/");
     controller.changePage(page);
-    Modular.to.navigate("/home/${page.name}");
   }
 
   @override
