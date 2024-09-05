@@ -11,14 +11,25 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute('/home/');
+    Modular.setInitialRoute('/home/dashboard');
 
     return MaterialApp.router(
       title: 'My Smart App',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontWeight: FontWeight.bold,
+            height: 2,
+          ),
+          labelLarge: TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 16,
+          )
+        ),
+      ),
       routerConfig: Modular.routerConfig,
     );
   }
 }
-
-

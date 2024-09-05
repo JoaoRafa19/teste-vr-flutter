@@ -1,0 +1,1 @@
+ /Users/joaorafa19/development/dev/code/teste-vr/teste-vr-flutter/.dart_tool/flutter_build/ad246eaf0f9bada104cb426a7c213a6e/native_assets.yaml: 
