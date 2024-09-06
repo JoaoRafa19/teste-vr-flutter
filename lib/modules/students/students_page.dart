@@ -1,42 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:teste_vr_flutter/modules/students/students_controller.dart';
 
-class StudentsPage extends StatefulWidget {
-  const StudentsPage({super.key});
+class StudentsPage extends StatelessWidget {
+  StudentsPage({super.key});
 
-  @override
-  State<StudentsPage> createState() => _StudentPageState();
-}
+  final controller = StudentsController(Modular.get());
 
-class _StudentPageState extends State<StudentsPage> {
-  final List<Map<String, String>> students = [
-    {"name": "Katherine Smith", "courses": "Intro to Python"},
-    {"name": "John Doe", "courses": "Intro to Python, Advanced Python"},
-    {"name": "Lauren Johnson", "courses": "Intro to Python"},
-    {"name": "Michael Brown", "courses": "Advanced Python"},
-    {"name": "Emily Davis", "courses": "Intro to Python"},
-  ];
-
-  List<Map<String, String>> filteredStudents = [];
-  TextEditingController searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    filteredStudents = students;
-    searchController.addListener(() {
-      filterStudents();
-    });
-  }
-
-  void filterStudents() {
-    final query = searchController.text.toLowerCase();
-    setState(() {
-      filteredStudents = students
-          .where((student) => student["name"]!.toLowerCase().contains(query))
-          .toList();
-    });
-  }
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,30 +45,35 @@ class _StudentPageState extends State<StudentsPage> {
             const SizedBox(height: 10),
             Expanded(
               child: SingleChildScrollView(
-                child: DataTable(
-                  columns: const [
-                    DataColumn(label: Text("Name")),
-                    DataColumn(label: Text("Courses")),
-                    DataColumn(label: Text("Actions")),
-                  ],
-                  rows: filteredStudents
-                      .map(
-                        (student) => DataRow(
-                          cells: [
-                            DataCell(Text(student["name"]!)),
-                            DataCell(Text(student["courses"]!)),
-                            DataCell(
-                              TextButton(
-                                onPressed: () {
-                                  // Implement the action for editing the student
-                                },
-                                child: const Text("Edit"),
-                              ),
+                child: Observer(
+                  builder: (context) {
+                    return DataTable(
+                      columns: const [
+                        DataColumn(label: Text("Name")),
+                        DataColumn(label: Text("Code")),
+                        DataColumn(label: Text("Actions")),
+                      ],
+                      rows: controller.filteredStudents
+                          .map(
+                            (student) => DataRow(
+                              cells: [
+                                DataCell(Text(student.nome)),
+                                DataCell(Text("${student.code}")),
+                                DataCell(
+                                  TextButton(
+                                    onPressed: () {
+                                      Modular.to.navigate("/home/students/create",
+                                          arguments: student);
+                                    },
+                                    child: const Text("Edit"),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                          )
+                          .toList(),
+                    );
+                  }
                 ),
               ),
             ),

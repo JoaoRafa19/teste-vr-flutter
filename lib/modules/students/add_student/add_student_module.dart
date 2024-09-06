@@ -1,6 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:teste_vr_flutter/modules/add_student/add_student_controller.dart';
-import 'package:teste_vr_flutter/modules/add_student/add_student_page.dart';
+import 'package:teste_vr_flutter/modules/students/add_student/add_student_controller.dart';
+import 'package:teste_vr_flutter/modules/students/add_student/add_student_page.dart';
 
 class AddStudentModule extends Module {
   @override

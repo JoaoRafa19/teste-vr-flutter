@@ -75,7 +75,9 @@ class CreateCoursePageState extends State<CreateCoursePage> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       final String description = _descriptionController.text;
-                      final String syllabus = _syllabusController.text;
+                      //final String syllabus = _syllabusController.text;
+
+                      
 
                       // Lógica para salvar o curso
                       ScaffoldMessenger.of(context).showSnackBar(

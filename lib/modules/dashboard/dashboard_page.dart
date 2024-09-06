@@ -78,7 +78,7 @@ class DashboardPage extends StatelessWidget {
               const SizedBox(height: 50),
               Container(
                 width: width * (isSmall ? 1 : 0.8),
-                height: width < 1000 ? height * 0.7 : height * 0.5,
+                height: width < 1000 ? height * 0.6 : height * 0.5,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey[300] ?? Colors.grey),
@@ -94,7 +94,7 @@ class DashboardPage extends StatelessWidget {
                               Observer(builder: (context) {
                                 final info = controller.dashboardInfo;
                                 if (controller.loading) {
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                 }
                                 return Chart(
                                   data: [
@@ -118,7 +118,7 @@ class DashboardPage extends StatelessWidget {
                               Observer(builder: (context) {
                                 final info = controller.dashboardInfo;
                                 if (controller.loading) {
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                 }
                                 return Chart(
                                   data: [
@@ -141,7 +141,7 @@ class DashboardPage extends StatelessWidget {
                             Observer(builder: (context) {
                               final info = controller.dashboardInfo;
                               if (controller.loading) {
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                 }
                               return Chart(
                                 data: [
@@ -164,7 +164,7 @@ class DashboardPage extends StatelessWidget {
                             Observer(builder: (context) {
                               final info = controller.dashboardInfo;
                               if (controller.loading) {
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                 }
                               return Chart(
                                 data: [

@@ -7,6 +7,7 @@ class AppModule extends Module {
   @override
   void binds(i) {
     i.addInstance(RestClient(Env.backendBaseUrl));
+  
     super.binds(i);
   }
 
