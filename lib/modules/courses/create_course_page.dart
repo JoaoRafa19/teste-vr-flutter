@@ -1,5 +1,3 @@
-import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:teste_vr_flutter/modules/courses/courses_module.dart';
@@ -75,15 +73,6 @@ class CreateCoursePageState extends State<CreateCoursePage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    try {
-                      final curso = await Dio().get(
-                          "https://practical-evelyn-joaopedrorafael-aeb7e713.koyeb.app/aluno/search?q=Jo");
-                      print(curso);
-                    } on Exception catch (e) {
-                      // TODO
-                      print(e);
-                    }
-
                     if (_formKey.currentState!.validate()) {
                       final String description = _descriptionController.text;
                       final String syllabus = _syllabusController.text;

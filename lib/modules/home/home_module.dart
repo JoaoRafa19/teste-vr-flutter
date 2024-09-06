@@ -11,7 +11,6 @@ import 'package:teste_vr_flutter/modules/students/students_module.dart';
 class HomeModule extends Module {
   @override
   void binds(Injector i) {
-    i.addInstance(RestClient(Env.backendBaseUrl));
     i.addInstance(HomeController());
     super.binds(i);
   }

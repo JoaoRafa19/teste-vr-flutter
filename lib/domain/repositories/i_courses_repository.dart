@@ -1,4 +1,4 @@
-import 'package:teste_vr_flutter/domain/models/course_entity.dart';
+import 'package:teste_vr_flutter/domain/entities/course_entity.dart';
 
 abstract interface class ICoursesRepository {
   Future<(Course, Exception?)> createCourse(String theme, String description);

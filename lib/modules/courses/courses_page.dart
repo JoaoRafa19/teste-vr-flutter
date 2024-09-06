@@ -5,10 +5,10 @@ class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
 
   @override
-  _CoursesPageState createState() => _CoursesPageState();
+  CoursesPageState createState() => CoursesPageState();
 }
 
-class _CoursesPageState extends State<CoursesPage> {
+class CoursesPageState extends State<CoursesPage> {
   final TextEditingController _searchController = TextEditingController();
   List<Map<String, String>> courses = [
     {

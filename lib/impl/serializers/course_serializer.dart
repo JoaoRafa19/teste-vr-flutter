@@ -1,15 +1,16 @@
-
-
 import 'package:teste_vr_flutter/domain/entities/course_entity.dart';
 
-extension Serializable on Course {
-   static Course fromJson(Map<String, dynamic> json){
-    return Course(code: json["codigo"], description: json["descricao"], theme: json["ementa"]);
-
+abstract class SerializeCourse {
+  static Course fromJson(Map<String, dynamic> json) {
+    return Course(
+        code: json["codigo"],
+        description: json["descricao"],
+        theme: json["ementa"]);
   }
-  Map<String, dynamic> get toJson => {
-    "codigo": code,
-    "descricao": description,
-    "ementa": theme
-  };
+
+  Map<String, dynamic> toJson(Course course) => {
+        "codigo": course.code,
+        "descricao": course.description,
+        "ementa": course.theme,
+      };
 }

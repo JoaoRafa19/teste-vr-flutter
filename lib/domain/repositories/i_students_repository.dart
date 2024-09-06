@@ -1,6 +1,6 @@
-import 'package:teste_vr_flutter/domain/models/course_entity.dart';
-import 'package:teste_vr_flutter/domain/models/enrolment_entity.dart';
-import 'package:teste_vr_flutter/domain/models/students_entity.dart';
+import 'package:teste_vr_flutter/domain/entities/course_entity.dart';
+import 'package:teste_vr_flutter/domain/entities/enrolment_entity.dart';
+import 'package:teste_vr_flutter/domain/entities/students_entity.dart';
 
 abstract interface class IStudentsRepository {
   Future<(List<Student>, Exception?)> getAllStudents();

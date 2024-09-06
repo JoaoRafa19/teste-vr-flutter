@@ -1,7 +1,7 @@
 import 'package:teste_vr_flutter/domain/entities/enrolment_entity.dart';
 
-extension SerializableEnrolment on Enrolment {
-  Enrolment fromJson(Map<String, dynamic> json) {
+abstract class EnrolmentSerializer {
+  static Enrolment fromJson(Map<String, dynamic> json) {
     return Enrolment(
       code: json['codigo'] ?? -1,
       studentCode: json['codigo_aluno'] ?? -1,
@@ -9,10 +9,9 @@ extension SerializableEnrolment on Enrolment {
     );
   }
 
-  // Converter de Enrolment para JSON
-  Map<String, dynamic> get toJson => {
-        'codigo': code,
-        'codigo_aluno': studentCode,
-        'codigo_curso': courseCode,
+  static Map<String, dynamic> toJson(Enrolment entity) => {
+        'codigo': entity.code,
+        'codigo_aluno': entity.studentCode,
+        'codigo_curso': entity.courseCode,
       };
 }
