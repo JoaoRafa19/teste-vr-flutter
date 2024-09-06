@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:teste_vr_flutter/core/env/env.dart';
+import 'package:teste_vr_flutter/core/rest_client/dio_rest_client.dart';
+import 'package:teste_vr_flutter/modules/courses/courses_module.dart';
 import 'package:teste_vr_flutter/modules/dashboard/dashboad_module.dart';
 import 'package:teste_vr_flutter/modules/home/home_controller.dart';
 import 'package:teste_vr_flutter/modules/home/home_page.dart';
@@ -8,7 +11,8 @@ import 'package:teste_vr_flutter/modules/students/students_module.dart';
 class HomeModule extends Module {
   @override
   void binds(Injector i) {
-    i.add(HomeController.new);
+    i.addInstance(RestClient(Env.backendBaseUrl));
+    i.addInstance(HomeController());
     super.binds(i);
   }
 
@@ -20,6 +24,7 @@ class HomeModule extends Module {
       children: [
         ModuleRoute('/dashboard', module: DashboardModule()),
         ModuleRoute('/students', module: StudentsModule()),
+        ModuleRoute("/courses", module: CoursesModule())
       ],
     );
     super.routes(r);

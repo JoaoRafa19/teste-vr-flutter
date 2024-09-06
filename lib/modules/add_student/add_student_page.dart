@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AddStudentPage extends StatefulWidget {
   const AddStudentPage({super.key});
@@ -15,6 +16,11 @@ class AddStudentPageState extends State<AddStudentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton.outlined(
+            onPressed: () {
+              Modular.to.navigate('/home/students');
+            },
+            icon: const Icon(Icons.arrow_back)),
         title: const Text('Add Student'),
       ),
       body: Padding(

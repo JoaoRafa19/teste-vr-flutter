@@ -7,9 +7,7 @@ class DashboardController = DashboardControllerBase with _$DashboardController;
 abstract class DashboardControllerBase with Store {
   DashboardControllerBase();
 
-  Future<void> init() async {
-
-  }
+  Future<void> init() async {}
 
   @observable
   int touchedIndex = -1;

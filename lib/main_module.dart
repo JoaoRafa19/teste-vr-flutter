@@ -10,4 +10,3 @@ class AppModule extends Module {
     r.module("/home", module: HomeModule());
   }
 }
-

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
@@ -20,8 +22,18 @@ class DashboardPage extends StatelessWidget {
     // Dados dos gráficos
     final chartData = [
       ("Alunos Matriculados", 10, Colors.tealAccent),
-      ("Alunos Não Matriculados", 10, Colors.black),
-      ("Alunos Pendentes", 10, Colors.grey),
+      ("Alunos Não Matriculados", 1, Colors.black),
+    ];
+
+    final chart2Data = [
+      (
+        "ReactJs",
+        1,
+        Colors.primaries[Random().nextInt(Colors.primaries.length)]
+      ),
+      ("Go", 2, Colors.primaries[Random().nextInt(Colors.primaries.length)]),
+      ("C#", 4, Colors.primaries[Random().nextInt(Colors.primaries.length)]),
+      ("C#", 2, Colors.primaries[Random().nextInt(Colors.primaries.length)]),
     ];
 
     return Scaffold(
@@ -43,7 +55,6 @@ class DashboardPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +97,7 @@ class DashboardPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
                               Chart(
-                                data: chartData,
+                                data: chart2Data,
                                 orientation: Axis.vertical,
                               ),
                             ],
@@ -100,7 +111,7 @@ class DashboardPage extends StatelessWidget {
                               orientation: Axis.horizontal,
                             ),
                             Chart(
-                              data: chartData,
+                              data: chart2Data,
                               orientation: Axis.horizontal,
                             ),
                           ],

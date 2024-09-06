@@ -20,45 +20,41 @@ class HomePage extends StatelessWidget {
       return SizedBox(
         width: width * (width > 1100 ? 0.2 : 0.3),
         child: Container(
-          padding:  EdgeInsets.all((width > 1200 ? 0.5 : 0.7) * 16),
+          padding: EdgeInsets.all((width > 1200 ? 0.5 : 0.7) * 16),
           margin: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Observer(
-                builder: (context) {
-                  return PagesTile(
-                    name: "Dashboard",
-                    page: Pages.dashboard,
-                    icon: Icons.home_outlined,
-                    activeIcon: Icons.home,
-                    onTap: onTap,
-                    active: controller.current == Pages.dashboard,
-                  );
-                }
-              ),
-              Observer(
-                builder: (context) {
-                  return PagesTile(
-                    name: "Students",
-                    page: Pages.students,
-                    icon: Icons.people_outline,
-                    activeIcon: Icons.people,
-                    onTap: onTap,
-                    active: controller.current == Pages.students,
-                  );
-                }
-              ),
-              Observer(
-                builder: (context) {
-                  return PagesTile(
-                    name: "Courses",
-                    page: Pages.courses,
-                    icon: Icons.book_outlined,
-                    active: controller.current == Pages.courses,
-                  );
-                }
-              ),
+              Observer(builder: (context) {
+                return PagesTile(
+                  name: "Dashboard",
+                  page: Pages.dashboard,
+                  icon: Icons.home_outlined,
+                  activeIcon: Icons.home,
+                  onTap: onTap,
+                  active: controller.current == Pages.dashboard,
+                );
+              }),
+              Observer(builder: (context) {
+                return PagesTile(
+                  name: "Students",
+                  page: Pages.students,
+                  icon: Icons.people_outline,
+                  activeIcon: Icons.people,
+                  onTap: onTap,
+                  active: controller.current == Pages.students,
+                );
+              }),
+              Observer(builder: (context) {
+                return PagesTile(
+                  name: "Courses",
+                  page: Pages.courses,
+                  activeIcon: Icons.book,
+                  onTap: onTap,
+                  icon: Icons.book_outlined,
+                  active: controller.current == Pages.courses,
+                );
+              }),
             ],
           ),
         ),
@@ -69,8 +65,8 @@ class HomePage extends StatelessWidget {
       final width = MediaQuery.of(context).size.width;
       return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(width < 700 ? 40 : 0),
-          child: Visibility( visible : width < 700, child: AppBar())),
+            preferredSize: Size.fromHeight(width < 700 ? 40 : 0),
+            child: Visibility(visible: width < 700, child: AppBar())),
         drawer: Drawer(
           child: Container(
             child: leading,

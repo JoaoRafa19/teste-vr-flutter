@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class StudentsPage extends StatefulWidget {
   const StudentsPage({super.key});
@@ -32,9 +33,7 @@ class _StudentPageState extends State<StudentsPage> {
     final query = searchController.text.toLowerCase();
     setState(() {
       filteredStudents = students
-          .where((student) =>
-              student["name"]!.toLowerCase().contains(query) ||
-              student["courses"]!.toLowerCase().contains(query))
+          .where((student) => student["name"]!.toLowerCase().contains(query))
           .toList();
     });
   }
@@ -107,6 +106,7 @@ class _StudentPageState extends State<StudentsPage> {
               child: ElevatedButton.icon(
                 onPressed: () {
                   // Action for adding a new student
+                  Modular.to.navigate("/home/students/create");
                 },
                 icon: const Icon(Icons.add),
                 label: const Text("Add student"),

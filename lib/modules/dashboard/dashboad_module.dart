@@ -1,4 +1,3 @@
-
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:teste_vr_flutter/modules/dashboard/dashboard_controller.dart';
 import 'package:teste_vr_flutter/modules/dashboard/dashboard_page.dart';
@@ -6,7 +5,7 @@ import 'package:teste_vr_flutter/modules/dashboard/dashboard_page.dart';
 class DashboardModule extends Module {
   @override
   void binds(Injector i) {
-    i.add(DashboardController.new);
+    i.addInstance(DashboardController());
     super.binds(i);
   }
 
