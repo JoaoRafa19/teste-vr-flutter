@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
 import 'package:teste_vr_flutter/modules/dashboard/dashboard_controller.dart';
@@ -19,29 +20,23 @@ class DashboardPage extends StatelessWidget {
     final theme = Theme.of(context);
     final isSmall = width < 700;
 
-    // Dados dos gráficos
-    final chartData = [
-      ("Alunos Matriculados", 10, Colors.tealAccent),
-      ("Alunos Não Matriculados", 1, Colors.black),
-    ];
-
-    final chart2Data = [
-      (
-        "ReactJs",
-        1,
-        Colors.primaries[Random().nextInt(Colors.primaries.length)]
-      ),
-      ("Go", 2, Colors.primaries[Random().nextInt(Colors.primaries.length)]),
-      ("C#", 4, Colors.primaries[Random().nextInt(Colors.primaries.length)]),
-      ("C#", 2, Colors.primaries[Random().nextInt(Colors.primaries.length)]),
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Dashboard",
           style: theme.textTheme.titleLarge,
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: InkWell(
+              onTap: () => controller.init(),
+              child: const Row(
+                children: [Text("Refresh Data"), Icon(Icons.refresh)],
+              ),
+            ),
+          )
+        ],
         centerTitle: isSmall,
       ),
       body: Container(
@@ -56,25 +51,30 @@ class DashboardPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DashboardHeaderCard(
-                    title: "Total Students",
-                    data: NumberFormat("#,##0").format(1000),
-                  ),
-                  const SizedBox(width: 20),
-                  DashboardHeaderCard(
-                    title: "Total Courses",
-                    data: NumberFormat("#,##0").format(9),
-                  ),
-                  const SizedBox(width: 20),
-                  DashboardHeaderCard(
-                    title: "Total Enrolments",
-                    data: NumberFormat("#,##0").format(2000),
-                  ),
-                ],
-              ),
+              Observer(builder: (context) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    DashboardHeaderCard(
+                      title: "Total Students",
+                      data: NumberFormat("#,##0")
+                          .format(controller.dashboardInfo.totalAlunos),
+                    ),
+                    const SizedBox(width: 20),
+                    DashboardHeaderCard(
+                      title: "Total Courses",
+                      data: NumberFormat("#,##0")
+                          .format(controller.dashboardInfo.totalCursos),
+                    ),
+                    const SizedBox(width: 20),
+                    DashboardHeaderCard(
+                      title: "Total Enrolments",
+                      data: NumberFormat("#,##0")
+                          .format(controller.dashboardInfo.totalMatriculas),
+                    ),
+                  ],
+                );
+              }),
               const SizedBox(height: 50),
               Container(
                 width: width * (isSmall ? 1 : 0.8),
@@ -91,29 +91,93 @@ class DashboardPage extends StatelessWidget {
                       ? SingleChildScrollView(
                           child: Column(
                             children: [
-                              Chart(
-                                data: chartData,
-                                orientation: Axis.vertical,
-                              ),
+                              Observer(builder: (context) {
+                                final info = controller.dashboardInfo;
+                                if (controller.loading) {
+                                  return CircularProgressIndicator();
+                                }
+                                return Chart(
+                                  data: [
+                                    (
+                                      "Alunos Matriculados",
+                                      info.alunosComMatricula.length,
+                                      Colors.accents[Random()
+                                          .nextInt(Colors.accents.length)]
+                                    ),
+                                    (
+                                      "Alunos Matriculados",
+                                      info.alunosSemMatricula.length,
+                                      Colors.accents[Random()
+                                          .nextInt(Colors.accents.length)]
+                                    ),
+                                  ],
+                                  orientation: Axis.vertical,
+                                );
+                              }),
                               const SizedBox(height: 16),
-                              Chart(
-                                data: chart2Data,
-                                orientation: Axis.vertical,
-                              ),
+                              Observer(builder: (context) {
+                                final info = controller.dashboardInfo;
+                                if (controller.loading) {
+                                  return CircularProgressIndicator();
+                                }
+                                return Chart(
+                                  data: [
+                                    ...info.matriculasPorCurso.map((e) => (
+                                          e.curso,
+                                          e.totalMatriculas,
+                                          Colors.primaries[Random()
+                                              .nextInt(Colors.accents.length)]
+                                        ))
+                                  ],
+                                  orientation: Axis.vertical,
+                                );
+                              }),
                             ],
                           ),
                         )
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Chart(
-                              data: chartData,
-                              orientation: Axis.horizontal,
-                            ),
-                            Chart(
-                              data: chart2Data,
-                              orientation: Axis.horizontal,
-                            ),
+                            Observer(builder: (context) {
+                              final info = controller.dashboardInfo;
+                              if (controller.loading) {
+                                  return CircularProgressIndicator();
+                                }
+                              return Chart(
+                                data: [
+                                  (
+                                    "Alunos Matriculados",
+                                    info.alunosComMatricula.length,
+                                    Colors.accents[
+                                        Random().nextInt(Colors.accents.length)]
+                                  ),
+                                  (
+                                    "Alunos Sem Matricula",
+                                    info.alunosSemMatricula.length,
+                                    Colors.accents[
+                                        Random().nextInt(Colors.accents.length)]
+                                  ),
+                                ],
+                                orientation: Axis.horizontal,
+                              );
+                            }),
+                            Observer(builder: (context) {
+                              final info = controller.dashboardInfo;
+                              if (controller.loading) {
+                                  return CircularProgressIndicator();
+                                }
+                              return Chart(
+                                data: [
+                                  ...info.matriculasPorCurso.map((e) => (
+                                        e.curso,
+                                        e.totalMatriculas,
+                                        Colors.primaries[Random()
+                                            .nextInt(Colors.accents.length)]
+                                      ))
+                                ],
+                                orientation: Axis.horizontal,
+                              );
+                            }),
                           ],
                         );
                 }),
