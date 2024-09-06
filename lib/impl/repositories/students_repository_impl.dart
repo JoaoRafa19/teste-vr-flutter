@@ -92,9 +92,9 @@ class StudentsRepositoryImpl implements IStudentsRepository {
             .toList();
         return (students, null);
       }
-      return (<Student>[], Exception("não foi possivel fazer matrícula"));
+      return (<Student>[], Exception("aluno não encontrado"));
     } catch (e) {
-      return (<Student>[], Exception("erro ao fazer matrpicula"));
+      return (<Student>[], Exception("erro ao buscar aluno"));
     }
   }
 

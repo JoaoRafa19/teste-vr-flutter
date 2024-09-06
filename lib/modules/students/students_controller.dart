@@ -11,6 +11,11 @@ abstract class StudentsControllerBase with Store {
   StudentsControllerBase(this.repository) {
     init();
   }
+  @observable
+  String? error;
+
+  @observable 
+  bool searching = false;
 
   @observable
   List<Student> filteredStudents = [];
@@ -19,5 +24,25 @@ abstract class StudentsControllerBase with Store {
     final (list, error) = await repository.getAllStudents();
     filteredStudents = [...list];
   }
-  
+
+  Future clear() async {
+    await init();
+    searching = false;
+  }
+
+  Future search(String token) async {
+    if(token.length < 3){
+      await init();
+      return;
+      
+    }
+    final (resultList, err) = await repository.searchStudent(token);
+    if (err != null) {
+      error = err.toString().split(":")[1];
+      return;
+    }
+    if(resultList.isNotEmpty){
+      filteredStudents = [...resultList];
+    }
+  }
 }

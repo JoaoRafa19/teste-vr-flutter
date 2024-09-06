@@ -14,6 +14,8 @@ class CreateCoursePageState extends State<CreateCoursePage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _syllabusController = TextEditingController();
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,9 +78,6 @@ class CreateCoursePageState extends State<CreateCoursePage> {
                     if (_formKey.currentState!.validate()) {
                       final String description = _descriptionController.text;
                       //final String syllabus = _syllabusController.text;
-
-                      
-
                       // Lógica para salvar o curso
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

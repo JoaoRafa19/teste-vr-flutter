@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:teste_vr_flutter/modules/students/add_student/add_student_controller.dart';
 
-class AddStudentPage extends StatefulWidget {
-  const AddStudentPage({super.key});
+class AddStudentPage extends StatelessWidget {
+  AddStudentPage({super.key});
 
-  @override
-  AddStudentPageState createState() => AddStudentPageState();
-}
-
-class AddStudentPageState extends State<AddStudentPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
+
+  final controller = Modular.get<AddStudentController>();
 
   @override
   Widget build(BuildContext context) {
