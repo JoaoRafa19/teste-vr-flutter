@@ -73,12 +73,36 @@ mixin _$AddStudentController on _AddStudentControllerBase, Store {
     });
   }
 
+  late final _$filteredCoursesAtom =
+      Atom(name: '_AddStudentControllerBase.filteredCourses', context: context);
+
+  @override
+  List<Course> get filteredCourses {
+    _$filteredCoursesAtom.reportRead();
+    return super.filteredCourses;
+  }
+
+  @override
+  set filteredCourses(List<Course> value) {
+    _$filteredCoursesAtom.reportWrite(value, super.filteredCourses, () {
+      super.filteredCourses = value;
+    });
+  }
+
   late final _$initAsyncAction =
       AsyncAction('_AddStudentControllerBase.init', context: context);
 
   @override
   Future<dynamic> init() {
     return _$initAsyncAction.run(() => super.init());
+  }
+
+  late final _$deleteStudentAsyncAction =
+      AsyncAction('_AddStudentControllerBase.deleteStudent', context: context);
+
+  @override
+  Future<dynamic> deleteStudent() {
+    return _$deleteStudentAsyncAction.run(() => super.deleteStudent());
   }
 
   late final _$removeEnrolmentAsyncAction = AsyncAction(
@@ -91,13 +115,28 @@ mixin _$AddStudentController on _AddStudentControllerBase, Store {
         .run(() => super.removeEnrolment(enrolment));
   }
 
+  late final _$_AddStudentControllerBaseActionController =
+      ActionController(name: '_AddStudentControllerBase', context: context);
+
+  @override
+  void filterCourses(String query) {
+    final _$actionInfo = _$_AddStudentControllerBaseActionController
+        .startAction(name: '_AddStudentControllerBase.filterCourses');
+    try {
+      return super.filterCourses(query);
+    } finally {
+      _$_AddStudentControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 student: ${student},
 enrolments: ${enrolments},
 availableCourses: ${availableCourses},
-error: ${error}
+error: ${error},
+filteredCourses: ${filteredCourses}
     ''';
   }
 }

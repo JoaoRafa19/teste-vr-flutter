@@ -20,7 +20,7 @@ class StudentsRepositoryImpl implements IStudentsRepository {
     try {
       final response = await client.post("/aluno", data: {"nome": name});
       if (response.data != null && response.statusCode == 200) {
-        final code = response.data["code"];
+        final code = response.data["codigo"];
         return (Student(nome: name, code: code), null);
       }
       return (Student.invalid(), Exception("não foi possivel criar aluno"));
@@ -31,10 +31,10 @@ class StudentsRepositoryImpl implements IStudentsRepository {
 
   @override
   Future<(Enrolment, Exception?)> enrollStudent(
-      Student student, List<Course> couses) async {
+      Student student, List<Course> courses) async {
     try {
       final response = await client.post("/aluno/${student.code}/matricula",
-          data: {"cursos":couses.map((e) => e.code).toList()});
+          data: {"cursos": courses.map((e) => e.code).toList()});
       if (response.data != null && response.statusCode == 200) {
         final enrolment = EnrolmentSerializer.fromJson(response.data);
         return (enrolment, null);
@@ -74,10 +74,7 @@ class StudentsRepositoryImpl implements IStudentsRepository {
         final student = SerializeStudent.fromJson(response.data);
         return (student, null);
       }
-      return (
-        Student.invalid(),
-        Exception("não foi possivel encontrar alunos")
-      );
+      return (Student.invalid(), Exception("não foi possivel encontrar aluno"));
     } catch (e) {
       return (Student.invalid(), Exception("erro ao encontrar aluno"));
     }
@@ -107,7 +104,6 @@ class StudentsRepositoryImpl implements IStudentsRepository {
           await client.patch("/aluno/$code", data: {"nome": student.nome});
       if (response.data != null && response.statusCode == 200) {
         final student = SerializeStudent.fromJson(response.data);
-
         return (student, null);
       }
       return (Student.invalid(), Exception("não foi possivel editar aluno"));
@@ -147,6 +143,19 @@ class StudentsRepositoryImpl implements IStudentsRepository {
       return (false, Exception("não foi possível remover a matrícula"));
     } catch (e) {
       return (false, Exception("erro ao remover matrícula"));
+    }
+  }
+
+  @override
+  Future<(bool, Exception?)> deleteStudent(Student student) async {
+    try {
+      final response = await client.delete("/aluno/${student.code}");
+      if (response.statusCode == 204) {
+        return (true, null);
+      }
+      return (false, Exception("não foi possível remover o aluno"));
+    } catch (e) {
+      return (false, Exception("erro ao remover aluno"));
     }
   }
 }

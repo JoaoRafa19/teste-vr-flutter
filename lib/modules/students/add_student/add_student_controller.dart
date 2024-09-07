@@ -30,6 +30,18 @@ abstract class _AddStudentControllerBase with Store {
   @observable
   String? error;
 
+  @observable
+  List<Course> filteredCourses = [];
+
+  @action
+  void filterCourses(String query) {
+    final lowerCaseQuery = query.toLowerCase();
+    filteredCourses = availableCourses.where((course) {
+      final courseName = course.description.toLowerCase();
+      return courseName.contains(lowerCaseQuery);
+    }).toList();
+  }
+
   @action
   Future init() async {
     if (student != null) {
@@ -40,11 +52,19 @@ abstract class _AddStudentControllerBase with Store {
       final (courses, errro) = await coursesRepository.getAll();
       if (errro == null) {
         availableCourses = [...courses];
+        filteredCourses = [...courses];
       }
     }
   }
 
-  
+  @action
+  Future deleteStudent() async {
+    if (student != null) {
+      final (res, err) = await studentsRepository.deleteStudent(student!);
+      await init();
+    }
+  }
+
   Future<bool> addEnrolment(Course course) async {
     if (student != null) {
       final (enrolment, err) = await studentsRepository.enrollStudent(

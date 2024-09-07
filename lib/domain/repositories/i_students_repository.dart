@@ -13,4 +13,5 @@ abstract interface class IStudentsRepository {
       Student student, List<Course> couses);
       Future<(List<Matricula>, Exception?)> getEnrolments(Student student);
       Future<(bool, Exception?)> deleteEnrolment(Student student, int course);
+      Future<(bool, Exception?)> deleteStudent(Student student);
 }

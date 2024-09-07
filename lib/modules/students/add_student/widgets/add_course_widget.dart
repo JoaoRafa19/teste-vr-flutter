@@ -9,6 +9,8 @@ class AddEnrolmentModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
+
     return Observer(
       builder: (_) {
         return Scaffold(
@@ -32,30 +34,53 @@ class AddEnrolmentModal extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search),
+                    hintText: "Search courses...",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    controller.filterCourses(value); // Método para filtrar
+                  },
+                ),
+                const SizedBox(height: 16),
                 Expanded(
                   child: Observer(
                     builder: (_) {
+                      if (controller.filteredCourses.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'No courses found',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        );
+                      }
                       return ListView.builder(
-                        itemCount: controller.availableCourses.length,
+                        itemCount: controller.filteredCourses.length,
                         itemBuilder: (context, index) {
-                          final course = controller.availableCourses[index];
+                          final course = controller.filteredCourses[index];
                           return ListTile(
                             title: Text(course.description),
                             subtitle: Text(course.theme),
                             trailing: IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () async {
+                                final nav = Navigator.of(context);
                                 final of = ScaffoldMessenger.of(context);
                                 final result =
                                     await controller.addEnrolment(course);
                                 if (!result) {
                                   of.showSnackBar(
-                                     SnackBar(
+                                    SnackBar(
                                       content: Text(controller.error ?? "Error"),
                                     ),
                                   );
                                 }
-                                Navigator.pop(context);
+                                nav.pop();
                               },
                             ),
                           );

@@ -91,6 +91,7 @@ class CoursesPage extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: ElevatedButton.icon(
                 onPressed: () {
+                  controller.activeEditinCourse = null;
                   Modular.to.navigate("/home/courses/create");
                 },
                 icon: const Icon(Icons.add),
