@@ -60,7 +60,7 @@ abstract class _AddStudentControllerBase with Store {
   @action
   Future deleteStudent() async {
     if (student != null) {
-      final (res, err) = await studentsRepository.deleteStudent(student!);
+      final (_, _) = await studentsRepository.deleteStudent(student!);
       await init();
     }
   }
