@@ -59,6 +59,9 @@ class AddEnrolmentModal extends StatelessWidget {
                           ),
                         );
                       }
+                      if (controller.loading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
                       return ListView.builder(
                         itemCount: controller.filteredCourses.length,
                         itemBuilder: (context, index) {
@@ -76,7 +79,8 @@ class AddEnrolmentModal extends StatelessWidget {
                                 if (!result) {
                                   of.showSnackBar(
                                     SnackBar(
-                                      content: Text(controller.error ?? "Error"),
+                                      content:
+                                          Text(controller.error ?? "Error"),
                                     ),
                                   );
                                 }

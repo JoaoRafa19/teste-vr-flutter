@@ -73,6 +73,22 @@ mixin _$AddStudentController on _AddStudentControllerBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: '_AddStudentControllerBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   late final _$filteredCoursesAtom =
       Atom(name: '_AddStudentControllerBase.filteredCourses', context: context);
 
@@ -136,6 +152,7 @@ student: ${student},
 enrolments: ${enrolments},
 availableCourses: ${availableCourses},
 error: ${error},
+loading: ${loading},
 filteredCourses: ${filteredCourses}
     ''';
   }

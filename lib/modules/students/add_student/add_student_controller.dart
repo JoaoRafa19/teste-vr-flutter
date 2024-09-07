@@ -31,6 +31,9 @@ abstract class _AddStudentControllerBase with Store {
   String? error;
 
   @observable
+  bool loading = false;
+
+  @observable
   List<Course> filteredCourses = [];
 
   @action
@@ -66,6 +69,7 @@ abstract class _AddStudentControllerBase with Store {
   }
 
   Future<bool> addEnrolment(Course course) async {
+    loading=true;
     if (student != null) {
       final (enrolment, err) = await studentsRepository.enrollStudent(
         student!,
@@ -73,17 +77,21 @@ abstract class _AddStudentControllerBase with Store {
       );
       if (err == null && enrolment.isValid) {
         await init();
+        loading=false;
         return true;
       } else {
         error = err.toString().split(":")[1];
+        loading=false;
         return false;
       }
     }
+    loading=false;
     return true;
   }
 
   @action
   Future<void> removeEnrolment(Matricula enrolment) async {
+    loading=true;
     final (res, err) =
         await studentsRepository.deleteEnrolment(student!, enrolment.code);
     if (err == null && res) {
