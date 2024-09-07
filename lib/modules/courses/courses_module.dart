@@ -8,13 +8,13 @@ class CoursesModule extends Module {
 
   @override
   void binds(Injector i) {
-    i.add(CoursesController.new);
+    i.addInstance(CoursesController(Modular.get()));
     super.binds(i);
   }
 
   @override
   void routes(RouteManager r) {
-    r.child("/", child: (_) => const CoursesPage());
+    r.child("/", child: (_) =>  CoursesPage());
     r.child("/create", child: (_) => const CreateCoursePage());
     super.routes(r);
   }

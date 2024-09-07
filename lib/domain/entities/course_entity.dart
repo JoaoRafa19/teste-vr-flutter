@@ -2,8 +2,8 @@ import 'package:teste_vr_flutter/domain/entities/entity.dart';
 
 class Course extends Entity {
   final int code;
-  final String description;
-  final String theme;
+  String description;
+  String theme;
 
   Course.invalid()
       : code = -1,

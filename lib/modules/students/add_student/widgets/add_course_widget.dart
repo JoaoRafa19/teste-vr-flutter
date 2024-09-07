@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:teste_vr_flutter/modules/students/add_student/add_student_controller.dart';
 
 class AddEnrolmentModal extends StatelessWidget {
@@ -33,7 +32,6 @@ class AddEnrolmentModal extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // List of available courses
                 Expanded(
                   child: Observer(
                     builder: (_) {

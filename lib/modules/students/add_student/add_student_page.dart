@@ -34,7 +34,6 @@ class AddStudentPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Campo de entrada para o nome
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -52,7 +51,6 @@ class AddStudentPage extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              // Lista de matriculas com badges e botão de remover
               Observer(builder: (_) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +82,6 @@ class AddStudentPage extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              // Botão para adicionar o estudante
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

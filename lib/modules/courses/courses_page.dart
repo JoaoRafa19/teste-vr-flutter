@@ -1,55 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:teste_vr_flutter/modules/courses/courses_controller.dart';
 
-class CoursesPage extends StatefulWidget {
-  const CoursesPage({super.key});
-
-  @override
-  CoursesPageState createState() => CoursesPageState();
-}
-
-class CoursesPageState extends State<CoursesPage> {
+class CoursesPage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
-  List<Map<String, String>> courses = [
-    {
-      "name": "Introduction to Flutter",
-      "description": "Learn the basics of Flutter"
-    },
-    {"name": "Advanced Dart", "description": "Deep dive into Dart programming"},
-    {
-      "name": "UI Design Principles",
-      "description": "Learn how to design responsive UIs"
-    },
-    {
-      "name": "State Management",
-      "description": "Manage state effectively in Flutter"
-    },
-    {
-      "name": "Database Integration",
-      "description": "Integrate Flutter with SQLite and Firebase"
-    },
-  ];
+  final controller = Modular.get<CoursesController>();
 
-  List<Map<String, String>> filteredCourses = [];
-
-  @override
-  void initState() {
-    super.initState();
-    filteredCourses = courses;
-
+  CoursesPage({super.key}) {
+    controller.getAllCourses();
     _searchController.addListener(() {
-      filterCourses();
-    });
-  }
-
-  void filterCourses() {
-    final query = _searchController.text.toLowerCase();
-    setState(() {
-      filteredCourses = courses
-          .where((course) =>
-              course["name"]!.toLowerCase().contains(query) ||
-              course["description"]!.toLowerCase().contains(query))
-          .toList();
+      controller.filterCourses(_searchController.text);
     });
   }
 
@@ -88,39 +49,48 @@ class CoursesPageState extends State<CoursesPage> {
 
             // Lista de cursos
             Expanded(
-              child: filteredCourses.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: filteredCourses.length,
-                      itemBuilder: (context, index) {
-                        final course = filteredCourses[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          child: ListTile(
-                            title: Text(course["name"]!),
-                            subtitle: Text(course["description"]!),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                // Ação ao editar o curso
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  : const Center(
+              child: Observer(
+                builder: (_) {
+                  final filteredCourses = controller.filteredCourses;
+
+                  if (filteredCourses.isEmpty) {
+                    return const Center(
                       child: Text(
                         'No courses found',
                         style: TextStyle(fontSize: 16),
                       ),
-                    ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    itemCount: filteredCourses.length,
+                    itemBuilder: (context, index) {
+                      final course = filteredCourses[index];
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        child: ListTile(
+                          title: Text(course.description),
+                          subtitle: Text(course.theme),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              controller.activeEditinCourse = course;
+                              Modular.to.navigate("/home/courses/create",
+                                  arguments: course);
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.bottomRight,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  // Action for adding a new student
                   Modular.to.navigate("/home/courses/create");
                 },
                 icon: const Icon(Icons.add),
