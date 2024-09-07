@@ -8,9 +8,10 @@ class HomePage extends StatelessWidget {
 
   final controller = Modular.get<HomeController>();
 
-  void onTap(Pages page) {
+  void onTap(Pages page, BuildContext context) {
     Modular.to.navigate("/home/${page.name}/");
     controller.changePage(page);
+    Scaffold.of(context).closeDrawer();
   }
 
   @override
@@ -103,7 +104,7 @@ class PagesTile extends StatelessWidget {
   final bool active;
   final String name;
   final Pages page;
-  final void Function(Pages page)? onTap;
+  final void Function(Pages page, BuildContext context)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +118,7 @@ class PagesTile extends StatelessWidget {
         ],
       ),
       onTap: onTap != null
-          ? () => onTap!(page)
+          ? () => onTap!(page, context)
           : () => Modular.to.navigate('/home/${page.name}'),
     );
   }

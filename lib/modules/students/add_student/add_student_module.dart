@@ -6,7 +6,7 @@ import 'package:teste_vr_flutter/modules/students/add_student/add_student_page.d
 class AddStudentModule extends Module {
   @override
   void binds(Injector i) {
-    i.addInstance(AddStudentController((Modular.args.data as Student?)));
+    i.addInstance(AddStudentController((Modular.args.data as Student?), Modular.get(), Modular.get()));
     super.binds(i);
   }
 

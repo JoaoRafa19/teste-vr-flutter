@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:teste_vr_flutter/core/rest_client/dio_rest_client.dart';
 import 'package:teste_vr_flutter/domain/entities/course_entity.dart';
 import 'package:teste_vr_flutter/domain/entities/enrolment_entity.dart';
+import 'package:teste_vr_flutter/domain/entities/matricula_entity.dart';
 import 'package:teste_vr_flutter/domain/entities/students_entity.dart';
 import 'package:teste_vr_flutter/domain/repositories/i_students_repository.dart';
 import 'package:teste_vr_flutter/impl/serializers/enrolment_serializer.dart';
+import 'package:teste_vr_flutter/impl/serializers/matricula_serializer.dart';
 import 'package:teste_vr_flutter/impl/serializers/student_serializer.dart';
 
 class StudentsRepositoryImpl implements IStudentsRepository {
@@ -31,8 +33,8 @@ class StudentsRepositoryImpl implements IStudentsRepository {
   Future<(Enrolment, Exception?)> enrollStudent(
       Student student, List<Course> couses) async {
     try {
-      final response =
-          await client.post("/aluno/${student.code}/matricula", data: couses);
+      final response = await client.post("/aluno/${student.code}/matricula",
+          data: {"cursos":couses.map((e) => e.code).toList()});
       if (response.data != null && response.statusCode == 200) {
         final enrolment = EnrolmentSerializer.fromJson(response.data);
         return (enrolment, null);
@@ -111,6 +113,40 @@ class StudentsRepositoryImpl implements IStudentsRepository {
       return (Student.invalid(), Exception("não foi possivel editar aluno"));
     } catch (e) {
       return (Student.invalid(), Exception("erro ao editar aluno"));
+    }
+  }
+
+  @override
+  Future<(List<Matricula>, Exception?)> getEnrolments(Student student) async {
+    try {
+      final response = await client.get(
+        "/aluno/${student.code}/matricula",
+      );
+      if (response.data != null && response.statusCode == 200) {
+        final enrolments = (jsonDecode(response.data) as List)
+            .map((e) => SerializeMatricula.fromJson(e))
+            .toList();
+        return (enrolments, null);
+      }
+      return (<Matricula>[], Exception("aluno não encontrado"));
+    } catch (e) {
+      return (<Matricula>[], Exception("erro ao buscar aluno"));
+    }
+  }
+
+  @override
+  Future<(bool, Exception?)> deleteEnrolment(
+      Student student, int course) async {
+    try {
+      final response = await client.delete(
+        "/aluno/${student.code}/$course",
+      );
+      if (response.statusCode == 204) {
+        return (true, null);
+      }
+      return (false, Exception("não foi possível remover a matrícula"));
+    } catch (e) {
+      return (false, Exception("erro ao remover matrícula"));
     }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:teste_vr_flutter/modules/students/add_student/add_student_controller.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:teste_vr_flutter/modules/students/add_student/widgets/add_course_widget.dart';
 
 class AddStudentPage extends StatelessWidget {
   AddStudentPage({super.key});
@@ -12,6 +14,9 @@ class AddStudentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (controller.student != null) {
+      _nameController.text = controller.student!.nome;
+    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton.outlined(
@@ -19,7 +24,8 @@ class AddStudentPage extends StatelessWidget {
               Modular.to.navigate('/home/students');
             },
             icon: const Icon(Icons.arrow_back)),
-        title: const Text('Add Student'),
+        title:
+            Text(controller.student == null ? 'Add Student' : "Edit Student"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -46,31 +52,86 @@ class AddStudentPage extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
+              // Lista de matriculas com badges e botão de remover
+              Observer(builder: (_) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (controller.enrolments.isNotEmpty) ...[
+                      const Text(
+                        'Enrolled Courses:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: controller.enrolments.map((enrolment) {
+                          return Chip(
+                            label: Text('Curso: ${enrolment.theme}'),
+                            deleteIcon: const Icon(Icons.close),
+                            onDeleted: () async {
+                              await controller.removeEnrolment(enrolment);
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ] else ...[
+                      const Text('No enrolments yet'),
+                    ]
+                  ],
+                );
+              }),
+
+              const SizedBox(height: 32),
+
               // Botão para adicionar o estudante
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       final String name = _nameController.text;
+                      var of = ScaffoldMessenger.of(context);
 
-                      // Ação para salvar o estudante com o nome fornecido
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Student $name added successfully!'),
-                        ),
-                      );
-
-                      // Resetar o campo de nome
-                      _nameController.clear();
+                      if (controller.student == null) {
+                        await controller.addStudent(name);
+                        of.showSnackBar(
+                          SnackBar(
+                            content: Text(controller.student == null
+                                ? 'Error adding Student!'
+                                : 'Student $name added successfully!'),
+                          ),
+                        );
+                        _nameController.clear();
+                      } else {
+                        final result = await controller.editStudent(name);
+                        if (!result) {
+                          of.showSnackBar(
+                            const SnackBar(
+                              content: Text('Error editing Student!'),
+                            ),
+                          );
+                        }
+                        Modular.to.navigate('/home/students');
+                      }
                     }
                   },
-                  child: const Text('Add Student'),
+                  child:
+                      Text(controller.student != null ? 'Save' : 'Add Student'),
                 ),
               ),
             ],
           ),
         ),
+      ),
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (_) => AddEnrolmentModal(controller: controller,),
+          );
+        },
+        child: const Text('Add Enrolment'),
       ),
     );
   }
